@@ -2,14 +2,12 @@
 
 convert_to_tag_chars() {
    local input_string="$1"
-   local result=""
-   for (( i=0; i<${#input_string}; i++ )); do
-       char="${input_string:$i:1}"
-       ascii_val=$(printf "%d" "'$char")
-       tag_val=$((ascii_val + 917504))
-       result+=$(python3 -c "print(chr($tag_val), end='')")
-   done
-   echo "$result"
+   python3 -c "
+import sys
+text = '$input_string'
+hidden = ''.join(chr(0xE0000 + ord(ch)) for ch in text)
+print(hidden, end='')
+"
 }
 
 rule_payload() {
