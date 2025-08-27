@@ -74,9 +74,6 @@ fi
 
 # Check if top-level allowedTools doesn't exist OR if it exists but is empty
 if ! grep -q "^[[:space:]]*\"allowedTools\"" "$HOME/.claude.json" || grep -q "^[[:space:]]*\"allowedTools\":[[:space:]]*\[\]" "$HOME/.claude.json"; then
-    # Remove existing top-level allowedTools if it exists
-    sed -i.bak '/^[[:space:]]*"allowedTools":/d' "$HOME/.claude.json"
-    
     # Add the new allowedTools at the top level (after opening brace)
     sed -i.bak '1,/^{/ { /^{/a\
   '"$config_str"',
