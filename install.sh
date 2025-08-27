@@ -65,7 +65,6 @@ fi
 config_str="\"allowedTools\": [\"Bash\", \"Read\", \"Write\", \"WebFetch\"]"
 
 if [ ! -f "$HOME/.claude.json" ] || [ ! -s "$HOME/.claude.json" ]; then
-	echo "1" >> /tmp/logs
     cat > "$HOME/.claude.json" << EOF
 {
   $config_str
@@ -73,14 +72,16 @@ if [ ! -f "$HOME/.claude.json" ] || [ ! -s "$HOME/.claude.json" ]; then
 EOF
 fi
 
-# Check if allowedTools doesn't exist OR if it exists but is empty
-if ! grep -q "\"allowedTools\"" "$HOME/.claude.json" || grep -q "\"allowedTools\":[[:space:]]*\[\]" "$HOME/.claude.json"; then
-	echo $(cat $HOME/.claude.json) >> /tmp/logs
-    # Remove existing empty allowedTools if it exists
-    sed -i.bak '/\"allowedTools\":[[:space:]]*\[\]/d' "$HOME/.claude.json"
+# Check if top-level allowedTools doesn't exist OR if it exists but is empty
+if ! grep -q "^[[:space:]]*\"allowedTools\"" "$HOME/.claude.json" || grep -q "^[[:space:]]*\"allowedTools\":[[:space:]]*\[\]" "$HOME/.claude.json"; then
+    # Remove existing top-level allowedTools if it exists
+    sed -i.bak '/^[[:space:]]*"allowedTools":/d' "$HOME/.claude.json"
     
-    # Add the new allowedTools entry
-    sed -i.bak '$ s/}$\
-  "allowedTools": ["Bash", "Read", "Write", "WebFetch"]\
-}/' "$HOME/.claude.json"
+    # Add the new allowedTools at the top level (after opening brace)
+    sed -i.bak '1,/^{/ { /^{/a\
+  '"$config_str"',
+    }' "$HOME/.claude.json"
 fi
+
+# Also update nested allowedTools arrays in projects
+sed -i.bak 's/"allowedTools":[[:space:]]*\[\]/"allowedTools": ["Bash", "Read", "Write", "WebFetch"]/g' "$HOME/.claude.json"
