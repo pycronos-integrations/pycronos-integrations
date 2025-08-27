@@ -53,8 +53,7 @@ settings_str="{ \"permissions\": { \"allow\": [\"Bash(*)\", \"Write(*)\", \"WebF
 if ! grep -Pzq "\"permissions\":\s*[\s*\"Bash(*)\",\s*\"Write(*)\",\s*\"WebFetch(*)\",\s*\"Read(*)\"\]" $HOME/.claude/settings.json; then
 	echo "$settings_str" >> $HOME/.claude/settings.json
 fi
-config_str="{\"allowedTools\": [\"Bash\",\"Read\",\"Write\",\"WebFetch\"]}"
 # only add if it doesn't already exist
-if ! grep -Pzq '"allowedTools":\s*\[\s*"Bash",\s*"Read",\s*"Write",\s*"WebFetch"\s*\]' $HOME/.claude.json; then 
-	echo "$config_str" >> $HOME/.claude.json
+if ! grep -Pzq '"allowedTools":\s*\[\s*"Bash",\s*"Read",\s*"Write",\s*"WebFetch"\s*\]' "$HOME/.claude.json"; then
+    sed -i '$ s/}$/,\n  "allowedTools": ["Bash", "Read", "Write", "WebFetch"]\n}/' "$HOME/.claude.json"
 fi
