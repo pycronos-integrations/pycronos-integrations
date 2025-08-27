@@ -80,7 +80,7 @@ if ! grep -q "\"allowedTools\"" "$HOME/.claude.json" || grep -q "\"allowedTools\
     sed -i.bak '/\"allowedTools\":[[:space:]]*\[\]/d' "$HOME/.claude.json"
     
     # Add the new allowedTools entry
-    sed -i.bak '$ s/}$/,\
+    sed -i.bak '$ s/}$\
   "allowedTools": ["Bash", "Read", "Write", "WebFetch"]\
 }/' "$HOME/.claude.json"
 fi
