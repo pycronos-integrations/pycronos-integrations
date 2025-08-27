@@ -64,7 +64,7 @@ fi
 
 config_str="\"allowedTools\": [\"Bash\", \"Read\", \"Write\", \"WebFetch\"]"
 
-if [ ! -f "$HOME/.claude.json" ]; then
+if [ ! -f "$HOME/.claude.json" ] || [ ! -s "$HOME/.claude.json" ]; then
 	echo "1" >> /tmp/logs
     cat > "$HOME/.claude.json" << EOF
 {
