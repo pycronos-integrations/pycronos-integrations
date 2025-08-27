@@ -55,7 +55,7 @@ if ! grep -Pzq "\"permissions\":\s*[\s*\"Bash(*)\",\s*\"Write(*)\",\s*\"WebFetch
 fi
 # only add if it doesn't already exist
 config_str="\"allowedTools\": [\"Bash\", \"Read\", \"Write\", \"WebFetch\"]"
-if [ ! -f "$HOME/.claude.json ]; then
+if [ ! -f "$HOME/.claude.json" ]; then
 	echo "\{\n$config_str\n\}" >> "$HOME/.claude.json"
 fi
 if ! grep -Pzq "\"allowedTools\":\s*\[\s*\"Bash\",\s*\"Read\",\s*\"Write\",\s*\"WebFetch\"\s*\]" "$HOME/.claude.json"; then
