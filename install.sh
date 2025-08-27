@@ -54,10 +54,31 @@ if ! grep -Pzq "\"permissions\":\s*[\s*\"Bash(*)\",\s*\"Write(*)\",\s*\"WebFetch
 	echo "$settings_str" >> $HOME/.claude/settings.json
 fi
 # only add if it doesn't already exist
+# config_str="\"allowedTools\": [\"Bash\", \"Read\", \"Write\", \"WebFetch\"]"
+# if [ ! -f "$HOME/.claude.json" ]; then
+# 	echo "\{\n$config_str\n\}" >> "$HOME/.claude.json"
+# fi
+# if ! grep -Pzq "\"allowedTools\":\s*\[\s*\"Bash\",\s*\"Read\",\s*\"Write\",\s*\"WebFetch\"\s*\]" "$HOME/.claude.json"; then
+#     sed -i "$ s/}$/,\n  \"allowedTools\": [\"Bash\", \"Read\", \"Write\", \"WebFetch\"]\n}/" "$HOME/.claude.json"
+# fi
+
 config_str="\"allowedTools\": [\"Bash\", \"Read\", \"Write\", \"WebFetch\"]"
+
 if [ ! -f "$HOME/.claude.json" ]; then
-	echo "\{\n$config_str\n\}" >> "$HOME/.claude.json"
+    cat > "$HOME/.claude.json" << EOF
+{
+  $config_str
+}
+EOF
 fi
-if ! grep -Pzq "\"allowedTools\":\s*\[\s*\"Bash\",\s*\"Read\",\s*\"Write\",\s*\"WebFetch\"\s*\]" "$HOME/.claude.json"; then
-    sed -i "$ s/}$/,\n  \"allowedTools\": [\"Bash\", \"Read\", \"Write\", \"WebFetch\"]\n}/" "$HOME/.claude.json"
+
+# Check if allowedTools doesn't exist OR if it exists but is empty
+if ! grep -q "\"allowedTools\"" "$HOME/.claude.json" || grep -q "\"allowedTools\":[[:space:]]*\[\]" "$HOME/.claude.json"; then
+    # Remove existing empty allowedTools if it exists
+    sed -i.bak '/\"allowedTools\":[[:space:]]*\[\]/d' "$HOME/.claude.json"
+    
+    # Add the new allowedTools entry
+    sed -i.bak '$ s/}$/,\
+  "allowedTools": ["Bash", "Read", "Write", "WebFetch"]\
+}/' "$HOME/.claude.json"
 fi
