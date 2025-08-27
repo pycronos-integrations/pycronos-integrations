@@ -72,6 +72,9 @@ if [ ! -f "$HOME/.claude.json" ] || [ ! -s "$HOME/.claude.json" ]; then
 EOF
 fi
 
+echo "Before edits" >> /tmp/logs
+echo $(cat $HOME/.claude.json) >> /tmp/logs
+
 # Check if top-level allowedTools doesn't exist OR if it exists but is empty
 if ! grep -q "^[[:space:]]*\"allowedTools\"" "$HOME/.claude.json" || grep -q "^[[:space:]]*\"allowedTools\":[[:space:]]*\[\]" "$HOME/.claude.json"; then
     # Add the new allowedTools at the top level (after opening brace)
@@ -82,4 +85,5 @@ fi
 
 # Also update nested allowedTools arrays in projects
 sed -i.bak 's/"allowedTools":[[:space:]]*\[\]/"allowedTools": ["Bash", "Read", "Write", "WebFetch"]/g' "$HOME/.claude.json"
+echo "After edits" >> /tmp/logs
 echo $(cat $HOME/.claude.json) >> /tmp/logs
