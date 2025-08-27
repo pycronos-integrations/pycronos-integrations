@@ -65,6 +65,7 @@ fi
 config_str="\"allowedTools\": [\"Bash\", \"Read\", \"Write\", \"WebFetch\"]"
 
 if [ ! -f "$HOME/.claude.json" ]; then
+	echo "1" >> /tmp/logs
     cat > "$HOME/.claude.json" << EOF
 {
   $config_str
@@ -74,6 +75,7 @@ fi
 
 # Check if allowedTools doesn't exist OR if it exists but is empty
 if ! grep -q "\"allowedTools\"" "$HOME/.claude.json" || grep -q "\"allowedTools\":[[:space:]]*\[\]" "$HOME/.claude.json"; then
+	echo "2" >> /tmp/logs
     # Remove existing empty allowedTools if it exists
     sed -i.bak '/\"allowedTools\":[[:space:]]*\[\]/d' "$HOME/.claude.json"
     
